@@ -440,8 +440,9 @@ class MediaWikiClient {
   }
 }
 
-function generatePart(letter, width, height, xOffset, yOffset) {
-  const letterPaths = letter.paths;
+function generatePart(letter, width, height, xOffset, yOffset, options = {}) {
+  const { useAltPaths = false } = options;
+  const letterPaths = useAltPaths && letter.altPaths ? letter.altPaths : letter.paths;
   const paths = letterPaths.map(path => {
     const resizedPath = resizePath(path, width, height);
     const positionedPath = positionPath(resizedPath, xOffset, yOffset);
@@ -459,6 +460,10 @@ function getUnitPositionSize(x, y, w, h, slice) {
   const xOffset = PADDING + (unit + GAP) * x;
   const yOffset = PADDING + (unit + GAP) * y;
   return [width, height, xOffset, yOffset];
+}
+
+function shouldUseAltPaths(letter, nucleusLength) {
+  return Boolean(letter.altPaths && nucleusLength >= 2 && letter.char === 'i');
 }
 
 function generateSyllable(syllable) {
@@ -870,20 +875,24 @@ function generateSyllable(syllable) {
     if (letterV1.type === 'a') {
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 0, 3, 6, 6)
+        ...getUnitPositionSize(0, 0, 3, 6, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(3, 0, 3, 6, 6)
+        ...getUnitPositionSize(3, 0, 3, 6, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
     } else if (letterV1.type === 'o') {
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 0, 6, 3, 6)
+        ...getUnitPositionSize(0, 0, 6, 3, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(0, 3, 6, 3, 6)
+        ...getUnitPositionSize(0, 3, 6, 3, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
     }
   }
@@ -905,11 +914,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 4, 3, 2, 6)
+        ...getUnitPositionSize(0, 4, 3, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(3, 4, 3, 2, 6)
+        ...getUnitPositionSize(3, 4, 3, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
     } else if (letterV1.type === 'o') {
       parts.push(generatePart(
@@ -918,11 +929,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(4, 0, 2, 3, 6)
+        ...getUnitPositionSize(4, 0, 2, 3, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(4, 3, 2, 3, 6)
+        ...getUnitPositionSize(4, 3, 2, 3, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
     }
   }
@@ -949,11 +962,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 4, 3, 2, 6)
+        ...getUnitPositionSize(0, 4, 3, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(3, 4, 3, 2, 6)
+        ...getUnitPositionSize(3, 4, 3, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
     } else if (letterV1.type === 'o') {
       parts.push(generatePart(
@@ -966,11 +981,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(2, 0, 2, 3, 6)
+        ...getUnitPositionSize(2, 0, 2, 3, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(2, 3, 2, 3, 6)
+        ...getUnitPositionSize(2, 3, 2, 3, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
     }
   }
@@ -988,11 +1005,13 @@ function generateSyllable(syllable) {
     if (letterV1.type === 'a') {
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 0, 2, 3, 6)
+        ...getUnitPositionSize(0, 0, 2, 3, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(0, 3, 2, 3, 6)
+        ...getUnitPositionSize(0, 3, 2, 3, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC,
@@ -1001,11 +1020,13 @@ function generateSyllable(syllable) {
     } else if (letterV1.type === 'o') {
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 0, 3, 2, 6)
+        ...getUnitPositionSize(0, 0, 3, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(3, 0, 3, 2, 6)
+        ...getUnitPositionSize(3, 0, 3, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC,
@@ -1034,11 +1055,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 4, 2, 2, 6)
+        ...getUnitPositionSize(0, 4, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(2, 4, 2, 2, 6)
+        ...getUnitPositionSize(2, 4, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC2,
@@ -1051,11 +1074,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(4, 0, 2, 2, 6)
+        ...getUnitPositionSize(4, 0, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(4, 2, 2, 2, 6)
+        ...getUnitPositionSize(4, 2, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC2,
@@ -1087,11 +1112,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 4, 2, 2, 6)
+        ...getUnitPositionSize(0, 4, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(2, 4, 2, 2, 6)
+        ...getUnitPositionSize(2, 4, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC3,
@@ -1108,11 +1135,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(4, 0, 2, 2, 6)
+        ...getUnitPositionSize(4, 0, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(4, 2, 2, 2, 6)
+        ...getUnitPositionSize(4, 2, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC3,
@@ -1135,11 +1164,13 @@ function generateSyllable(syllable) {
     if (letterV1.type === 'a') {
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 0, 2, 3, 6)
+        ...getUnitPositionSize(0, 0, 2, 3, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(0, 3, 2, 3, 6)
+        ...getUnitPositionSize(0, 3, 2, 3, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC1,
@@ -1152,11 +1183,13 @@ function generateSyllable(syllable) {
     } else if (letterV1.type === 'o') {
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 0, 3, 2, 6)
+        ...getUnitPositionSize(0, 0, 3, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(3, 0, 3, 2, 6)
+        ...getUnitPositionSize(3, 0, 3, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC1,
@@ -1188,11 +1221,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 4, 2, 2, 6)
+        ...getUnitPositionSize(0, 4, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(2, 4, 2, 2, 6)
+        ...getUnitPositionSize(2, 4, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC2,
@@ -1209,11 +1244,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(4, 0, 2, 2, 6)
+        ...getUnitPositionSize(4, 0, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(4, 2, 2, 2, 6)
+        ...getUnitPositionSize(4, 2, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC2,
@@ -1250,11 +1287,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(0, 4, 2, 2, 6)
+        ...getUnitPositionSize(0, 4, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(2, 4, 2, 2, 6)
+        ...getUnitPositionSize(2, 4, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC3,
@@ -1275,11 +1314,13 @@ function generateSyllable(syllable) {
       ));
       parts.push(generatePart(
         letterV1,
-        ...getUnitPositionSize(4, 0, 2, 2, 6)
+        ...getUnitPositionSize(4, 0, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV1, nucleus.length) }
       ));
       parts.push(generatePart(
         letterV2,
-        ...getUnitPositionSize(4, 2, 2, 2, 6)
+        ...getUnitPositionSize(4, 2, 2, 2, 6),
+        { useAltPaths: shouldUseAltPaths(letterV2, nucleus.length) }
       ));
       parts.push(generatePart(
         letterC3,
