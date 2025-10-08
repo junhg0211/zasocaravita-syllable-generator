@@ -1088,15 +1088,18 @@ function ensureSyllableFile(syllable) {
 }
 
 function main() {
-  if (fs.existsSync(OUTPUT_DIR)) {
+  /*
+  if (fs.existsSync(OUTPUT_DIR))
     fs.rmSync(OUTPUT_DIR, { recursive: true, force: true });
-  }
-  fs.mkdirSync(OUTPUT_DIR);
+  */
+  if (!fs.existsSync(OUTPUT_DIR))
+    fs.mkdirSync(OUTPUT_DIR);
 
-  const syllables = fs.readFileSync('syllables.txt', 'utf-8')
-    .split(/ |\n/)
-    .map(s => s.trim())
-    .filter(s => s.length > 0);
+  // get syllables from stdin
+  const input = fs.readFileSync(0, 'utf-8'); // 0 is stdin
+  const syllables = input.split(/\s+/).filter(s => s.length > 0);
+  console.log(`Generating ${syllables.length} syllables...`);
+  console.log(syllables.join(', '));
 
   for (const syllable of syllables) {
     ensureSyllableFile(syllable);
