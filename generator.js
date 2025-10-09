@@ -193,7 +193,7 @@ function formPath(path, width, height, xOffset, yOffset) {
 const SIZE = 14;
 const PADDING = 2;
 const GAP = 2;
-const COLOR = 'black';
+const COLOR = '#373a3c';
 const STROKE_WIDTH = 1;
 const STROKE_LINECAP = "square";
 const STROKE_LINEJOIN = "miter";
@@ -1392,7 +1392,7 @@ async function main() {
 
   // get syllables from stdin
   const input = fs.readFileSync(0, 'utf-8'); // 0 is stdin
-  const syllables = input.split(/\s+/).filter(s => s.length > 0);
+  const syllables = input.match(/[a-z]+/g) || [];
   console.log(`Generating ${syllables.length} syllables...`);
   console.log(syllables.join(', '));
 
