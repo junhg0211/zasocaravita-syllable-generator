@@ -194,7 +194,7 @@ const SIZE = 14;
 const PADDING = 2;
 const GAP = 2;
 const COLOR = '#373a3c';
-const STROKE_WIDTH = 1;
+const STROKE_WIDTH = 1.1;
 const STROKE_LINECAP = "square";
 const STROKE_LINEJOIN = "miter";
 const WIDTH = SIZE;
@@ -468,7 +468,7 @@ function shouldUseAltPaths(letter, nucleus) {
   if (!nucleus || nucleus.length < 2) return false;
 
   const hasTypeO = nucleus.split('').some(char => {
-    return char=== 'o';
+    return char=== 'o' || char === 'u';
   });
 
   return !hasTypeO;
